@@ -10,11 +10,11 @@ import {
 	InternalGameSettingType,
 	InternalSliderGameSetting,
 } from "../../Singletons/Settings/InternalGameSetting";
+import SettingsButtonGroup from "./Controls/SettingsButtonGroup";
 import SettingsSlider from "./Controls/SettingsSlider";
 import SettingsToggle from "./Controls/SettingsToggle";
 import { SettingsTab } from "./SettingsPageName";
 import SettingsSidebar from "./SettingsSidebar";
-import AirshipToggle from "../AirshipToggle";
 
 export default class SettingsPage extends AirshipBehaviour {
 	public sidebar!: SettingsSidebar;
@@ -37,6 +37,9 @@ export default class SettingsPage extends AirshipBehaviour {
 	public mouseSmoothingSlider!: SettingsSlider;
 	public touchSensitibitySlider!: SettingsSlider;
 	public volumeSlider!: SettingsSlider;
+
+	@Header("Video Settings")
+	public limitFpsButtonGroup!: SettingsButtonGroup;
 
 	@Header("Prefabs")
 	public sliderPrefab: GameObject;
@@ -134,6 +137,57 @@ export default class SettingsPage extends AirshipBehaviour {
 			}),
 		);
 
+		// Limit FPS
+		if (Game.IsMobile()) {
+			this.limitFpsButtonGroup.Init("Limit FPS", Protected.Settings.data.limitFps, [
+				{
+					text: "30",
+					value: 30,
+				},
+				{
+					text: "60",
+					value: 60,
+				},
+				{
+					text: "120",
+					value: 120,
+				},
+				{
+					text: "No Limit",
+					value: -1,
+				},
+			]);
+		} else {
+			this.limitFpsButtonGroup.Init("Limit FPS", Protected.Settings.data.limitFps, [
+				{
+					text: "30",
+					value: 30,
+				},
+				{
+					text: "60",
+					value: 60,
+				},
+				{
+					text: "144",
+					value: 144,
+				},
+				{
+					text: "240",
+					value: 240,
+				},
+				{
+					text: "No Limit",
+					value: -1,
+				},
+			]);
+		}
+		this.bin.Add(
+			this.limitFpsButtonGroup.onChanged.Connect((val) => {
+				Protected.Settings.SetLimitFPS(val as number);
+				Protected.Settings.MarkAsDirty();
+			}),
+		);
+
 		this.gamePageSettingsContainer.gameObject.ClearChildren();
 		if (Protected.Settings.gameSettings.size() > 0) {
 			for (let gameSetting of Protected.Settings.gameSettingsOrdered) {
@@ -147,7 +201,13 @@ export default class SettingsPage extends AirshipBehaviour {
 					const setting = gameSetting as InternalSliderGameSetting;
 					const go = Object.Instantiate(this.sliderPrefab, this.gamePageSettingsContainer);
 					const settingsSlider = go.GetAirshipComponent<SettingsSlider>()!;
-					settingsSlider.Init(gameSetting.name, setting.value as number, setting.min, setting.max, setting.increment);
+					settingsSlider.Init(
+						gameSetting.name,
+						setting.value as number,
+						setting.min,
+						setting.max,
+						setting.increment,
+					);
 					this.bin.Add(
 						settingsSlider.onChange.Connect((val) => {
 							Protected.Settings.SetGameSetting(setting.name, val);
@@ -188,10 +248,10 @@ export default class SettingsPage extends AirshipBehaviour {
 				if (!voiceChat.agent) {
 					voiceChat = Bridge.GetAirshipVoiceChatNetwork();
 					task.unscaledWait();
-				};
+				}
 
 				voiceChat.agent.MuteSelf = true;
-			};
+			}
 		});
 
 		this.mouseSensitivitySlider.Init("Mouse Sensitivity", settings.GetMouseSensitivity(), 0.01, 2, 0.01);

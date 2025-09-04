@@ -30,7 +30,8 @@ const defaultData: ClientSettingsFile = {
 	vsync: false,
 	shadowLevel: 0,
 	antiAliasing: 0,
-	voiceToggleEnabled: false
+	voiceToggleEnabled: false,
+	limitFps: -1,
 };
 
 interface SavedGameSettings {
@@ -258,6 +259,11 @@ export class ProtectedSettingsSingleton {
 		if (savedContents && savedContents !== "") {
 			this.data = json.decode(savedContents);
 			this.data = { ...defaultData, ...this.data };
+
+			// simple reconcile logic
+			if (this.data.limitFps === undefined) {
+				this.data.limitFps = -1;
+			}
 		} else {
 			this.data = defaultData;
 
@@ -279,6 +285,7 @@ export class ProtectedSettingsSingleton {
 		this.SetAntiAliasing(this.data.antiAliasing);
 		this.SetShadowLevel(this.data.shadowLevel);
 		this.SetVsync(this.data.vsync);
+		this.SetLimitFPS(this.data.limitFps);
 
 		task.spawn(() => {
 			this.settingsLoaded = true;
@@ -338,6 +345,11 @@ export class ProtectedSettingsSingleton {
 
 	public StartMicRecording(): void {
 		Bridge.StartMicRecording(this.micFrequency, this.micSampleLength);
+	}
+
+	public SetLimitFPS(limit: number): void {
+		Application.targetFrameRate = limit;
+		this.data.limitFps = limit;
 	}
 
 	public SetAntiAliasing(level: number): void {
