@@ -899,8 +899,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 643.5, y: -553.4}
-  m_SizeDelta: {x: 1287, y: 0}
+  m_AnchoredPosition: {x: 314.10333, y: -553.4}
+  m_SizeDelta: {x: 628.20667, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3168718122354516225
 CanvasRenderer:
@@ -1952,8 +1952,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 643.5, y: -0}
-  m_SizeDelta: {x: 1287, y: 0}
+  m_AnchoredPosition: {x: 314.10333, y: -0}
+  m_SizeDelta: {x: 628.20667, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3826648253571390289
 CanvasRenderer:
@@ -3535,7 +3535,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1891432596492862174}
   - component: {fileID: 9168336263209944633}
-  - component: {fileID: 7276539724572893753}
   m_Layer: 5
   m_Name: Max FPS
   m_TagString: Untagged
@@ -3585,70 +3584,11 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &7276539724572893753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140316842339478176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  guid: 8cea5f07-ea61-4ebc-8516-caecf154a6e7
-  script: {fileID: 8698240206822664949, guid: a822c156012ca4ec096f55c4f1a07501, type: 3}
-  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Controls/SettingsToggle.lua
-  forceContext: 0
-  metadata:
-    name: SettingsToggle
-    singleton: 0
-    decorators: []
-    properties:
-    - name: toggle
-      type: AirshipBehaviour
-      objectType: AirshipToggle
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipToggle.ts
-      jsDocs:
-        text: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: titleText
-      type: object
-      objectType: TMP_Text
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 5933406059817433969}
-      modified: 1
-    displayIcon: {fileID: 0}
-    displayName: 
 --- !u!1 &2443192253574724141
 GameObject:
   m_ObjectHideFlags: 0
@@ -7495,8 +7435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 643.5, y: -36}
-  m_SizeDelta: {x: 1287, y: 0}
+  m_AnchoredPosition: {x: 314.10333, y: -36}
+  m_SizeDelta: {x: 628.20667, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1801530218407316483
 CanvasRenderer:
@@ -8450,7 +8390,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 716.2185, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &3749180346856961140
 MonoBehaviour:
@@ -11808,8 +11748,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 643.5, y: -163.4}
-  m_SizeDelta: {x: 1287, y: 0}
+  m_AnchoredPosition: {x: 314.10333, y: -163.4}
+  m_SizeDelta: {x: 628.20667, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5741386937936449230
 MonoBehaviour:
@@ -14036,8 +13976,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 643.5, y: -391.7}
-  m_SizeDelta: {x: 1287, y: 0}
+  m_AnchoredPosition: {x: 314.10333, y: -391.7}
+  m_SizeDelta: {x: 628.20667, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &642745066133410698
 MonoBehaviour:

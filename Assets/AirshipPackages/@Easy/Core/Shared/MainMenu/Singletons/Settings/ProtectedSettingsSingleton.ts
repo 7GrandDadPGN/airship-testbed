@@ -1,3 +1,4 @@
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ClientSettingsFile } from "@Easy/Core/Shared/MainMenu/Singletons/Settings/ClientSettingsFile";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
@@ -348,8 +349,11 @@ export class ProtectedSettingsSingleton {
 	}
 
 	public SetLimitFPS(limit: number): void {
-		Application.targetFrameRate = limit;
 		this.data.limitFps = limit;
+		if (Game.IsMobile() && Game.coreContext === CoreContext.MAIN_MENU) {
+			return;
+		}
+		Application.targetFrameRate = limit;
 	}
 
 	public SetAntiAliasing(level: number): void {
