@@ -16,6 +16,8 @@ import SettingsToggle from "./Controls/SettingsToggle";
 import { SettingsTab } from "./SettingsPageName";
 import SettingsSidebar from "./SettingsSidebar";
 
+const MOBILE_NAV_HEIGHT = 60;
+
 export default class SettingsPage extends AirshipBehaviour {
 	public sidebar!: SettingsSidebar;
 	public tabs!: RectTransform;
@@ -105,11 +107,14 @@ export default class SettingsPage extends AirshipBehaviour {
 					// this.scrollView.offsetMin = new Vector2(5, 0);
 					// this.scrollView.anchoredPosition = new Vector2(0, -96);
 
-					this.scrollView.offsetMax = new Vector2(0, -notchHeight - 40);
+					this.scrollView.offsetMax = new Vector2(0, -notchHeight - MOBILE_NAV_HEIGHT);
 					this.scrollView.offsetMin = new Vector2(0, 0);
 
 					this.mobileHeader.gameObject.SetActive(true);
-					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 60);
+					this.mobileHeader.sizeDelta = new Vector2(
+						this.mobileHeader.sizeDelta.x,
+						notchHeight + MOBILE_NAV_HEIGHT,
+					);
 
 					this.desktopCloseButtonWrapper.gameObject.SetActive(false);
 					this.rightSection.anchorMin = new Vector2(0, 0);
