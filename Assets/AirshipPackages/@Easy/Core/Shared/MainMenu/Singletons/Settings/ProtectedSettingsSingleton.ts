@@ -1,3 +1,4 @@
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ClientSettingsFile } from "@Easy/Core/Shared/MainMenu/Singletons/Settings/ClientSettingsFile";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
@@ -30,6 +31,8 @@ const defaultData: ClientSettingsFile = {
 	vsync: false,
 	shadowLevel: 0,
 	antiAliasing: 0,
+	voiceToggleEnabled: false,
+	limitFps: -1,
 };
 
 interface SavedGameSettings {
@@ -71,6 +74,10 @@ export class ProtectedSettingsSingleton {
 			return this.IsSprintToggleEnabled();
 		});
 
+		contextbridge.callback<() => boolean>("ClientSettings:IsVoiceToggleEnabled", () => {
+			return this.IsVoiceToggleEnabled();
+		});
+
 		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {
 			return this.GetMouseSensitivity();
 		});
@@ -85,7 +92,7 @@ export class ProtectedSettingsSingleton {
 
 		contextbridge.callback(
 			"Settings:AddSlider",
-			(fromContext, name: string, startingValue: number, min: number, max: number) => {
+			(fromContext, name: string, startingValue: number, min: number, max: number, increment: number) => {
 				assert(min < max, "Slider: max must be greater than min.");
 
 				if (this.gameSettings.has(name)) {
@@ -109,6 +116,7 @@ export class ProtectedSettingsSingleton {
 					value,
 					min,
 					max,
+					increment,
 				};
 				this.gameSettings.set(name, setting);
 				this.gameSettingsOrdered.push(setting);
@@ -252,6 +260,11 @@ export class ProtectedSettingsSingleton {
 		if (savedContents && savedContents !== "") {
 			this.data = json.decode(savedContents);
 			this.data = { ...defaultData, ...this.data };
+
+			// simple reconcile logic
+			if (this.data.limitFps === undefined) {
+				this.data.limitFps = -1;
+			}
 		} else {
 			this.data = defaultData;
 
@@ -273,6 +286,7 @@ export class ProtectedSettingsSingleton {
 		this.SetAntiAliasing(this.data.antiAliasing);
 		this.SetShadowLevel(this.data.shadowLevel);
 		this.SetVsync(this.data.vsync);
+		this.SetLimitFPS(this.data.limitFps);
 
 		task.spawn(() => {
 			this.settingsLoaded = true;
@@ -288,6 +302,7 @@ export class ProtectedSettingsSingleton {
 
 		// Microphone
 		task.spawn(() => {
+			if (Game.IsMobile()) return;
 			if (!this.data.microphoneEnabled) {
 				return;
 			}
@@ -331,6 +346,14 @@ export class ProtectedSettingsSingleton {
 
 	public StartMicRecording(): void {
 		Bridge.StartMicRecording(this.micFrequency, this.micSampleLength);
+	}
+
+	public SetLimitFPS(limit: number): void {
+		this.data.limitFps = limit;
+		if (Game.IsMobile() && Game.coreContext === CoreContext.MAIN_MENU) {
+			return;
+		}
+		Application.targetFrameRate = limit;
 	}
 
 	public SetAntiAliasing(level: number): void {
@@ -406,6 +429,10 @@ export class ProtectedSettingsSingleton {
 		return this.data.sprintToggleEnabled;
 	}
 
+	public IsVoiceToggleEnabled(): boolean {
+		return this.data.voiceToggleEnabled;
+	}
+
 	public GetMouseSensitivity(): number {
 		return this.data.mouseSensitivity;
 	}
@@ -416,6 +443,11 @@ export class ProtectedSettingsSingleton {
 
 	public SetSprintToggleEnabled(value: boolean): void {
 		this.data.sprintToggleEnabled = value;
+		this.unsavedChanges = true;
+	}
+
+	public SetVoiceToggleEnabled(value: boolean): void {
+		this.data.voiceToggleEnabled = value;
 		this.unsavedChanges = true;
 	}
 
