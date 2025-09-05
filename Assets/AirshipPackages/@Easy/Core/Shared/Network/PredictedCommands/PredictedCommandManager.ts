@@ -870,12 +870,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		}
 
 		if (includeUnconfirmedEnd) {
-			let foundActive = false;
 			for (const [key, value] of this.unconfirmedFinalState) {
-				if (foundActive) return;
 				const cmd = CommandInstanceIdentifier.fromString(key);
-				if (cmd.characterId !== usedCharacter.id) return;
-				if (cmd.commandId !== commandId) return;
+				if (cmd.characterId !== usedCharacter.id) continue;
+				if (cmd.commandId !== commandId) continue;
 				return true;
 			}
 		}
