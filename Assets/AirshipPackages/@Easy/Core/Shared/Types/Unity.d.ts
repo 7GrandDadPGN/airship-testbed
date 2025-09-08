@@ -5474,6 +5474,15 @@ interface Rect {
 	 * @param allowInverse Does the test allow the widths and heights of the Rects to be negative?
 	 */
 	Overlaps(other: Rect, allowInverse: boolean): boolean;
+
+	/**
+	 * Set components of an existing Rect.
+	 * @param x Rect X position.
+	 * @param y Rect Y position.
+	 * @param width Rect width.
+	 * @param height Rect height.
+	 */
+	Set(x: number, y: number, width: number, height: number): void;
 }
 
 interface RectConstructor {
