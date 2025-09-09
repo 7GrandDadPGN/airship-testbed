@@ -10,12 +10,13 @@ import { Bin } from "../Util/Bin";
 import { SignalPriority } from "../Util/Signal";
 import { EmoteDefinition } from "./EmoteDefinition";
 import { EmoteId } from "./EmoteId";
-import { InternalEmoteDefinitions } from "./InternalEmoteDef";
+import { InternalEmoteDefinitions, EmoteCooldown } from "./InternalEmoteDef";
 import InternalEmoteMenu from "./InternalEmoteMenu";
 
 @Singleton({})
 export default class AirshipEmoteSingleton implements OnStart {
 	private emoteMenu: InternalEmoteMenu;
+	private emoteCooldown: Map<number, number> = new Map<number, number>();
 
 	public OnStart() {
 		if (Game.IsServer()) this.StartServer();
@@ -27,6 +28,11 @@ export default class AirshipEmoteSingleton implements OnStart {
 			const emoteDef = InternalEmoteDefinitions[emoteId as EmoteId] as EmoteDefinition | undefined;
 			if (!emoteDef) return;
 			if (!player.character) return;
+			if (this.emoteCooldown.get(player.character.id) ?? 0 > os.clock()) {
+				return;
+			} else {
+				this.emoteCooldown.set(player.character.id, os.clock() + EmoteCooldown);
+			}
 
 			CoreNetwork.ServerToClient.Character.EmoteStart.server.FireAllClients(player.character.id, emoteId);
 		});
@@ -38,6 +44,10 @@ export default class AirshipEmoteSingleton implements OnStart {
 			player.character.isEmoting = false;
 			player.character.onEmoteEnd.Fire();
 			CoreNetwork.ServerToClient.Character.EmoteEnd.server.FireExcept(player, player.character.id);
+		});
+
+		Airship.Characters.ObserveCharacters((character) => {
+			return () => this.emoteCooldown.delete(character.id);
 		});
 	}
 
