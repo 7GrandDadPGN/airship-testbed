@@ -350,10 +350,15 @@ export class ProtectedSettingsSingleton {
 
 	public SetLimitFPS(limit: number): void {
 		this.data.limitFps = limit;
-		if (Game.IsMobile() && Game.coreContext === CoreContext.MAIN_MENU) {
+		if (Game.coreContext === CoreContext.MAIN_MENU) {
 			return;
 		}
-		Application.targetFrameRate = limit;
+		// iOS needs to be set to 120 because -1 will let the OS pick and it won't be 120.
+		if (limit === -1 && Game.platform === AirshipPlatform.iOS) {
+			Application.targetFrameRate = 120;
+		} else {
+			Application.targetFrameRate = limit;
+		}
 	}
 
 	public SetAntiAliasing(level: number): void {
